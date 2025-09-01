@@ -9,29 +9,21 @@ public class Gem : MonoBehaviour
     private bool reported;
     private bool delivered;
 
-    void Start()
-    {
-        GameManager.I.RegisterGem(this);
-    }
+    void Start() { GameManager.I.RegisterGem(this); }
 
-    void OnDisable()
-    {
-        if (GameManager.I != null) GameManager.I.UnregisterGem(this);
-    }
-
-    void OnDestroy()
-    {
-        if (GameManager.I != null) GameManager.I.UnregisterGem(this);
-    }
+    void OnDisable() { if (GameManager.I != null) GameManager.I.UnregisterGem(this); }
+    void OnDestroy() { if (GameManager.I != null) GameManager.I.UnregisterGem(this); }
 
     public bool TryPickBy(Agent agent)
     {
         if (delivered) return false;
+
         if (agent.Color == color)
         {
             if (!agent.CanCarryAnother()) return false;
             GameManager.I.UnregisterGem(this);
-            GetComponent<Collider>().enabled = false;
+            var col = GetComponent<Collider>();
+            if (col) col.enabled = false;
             agent.PickUp(this);
             return true;
         }
@@ -49,6 +41,9 @@ public class Gem : MonoBehaviour
     public void SetDelivered()
     {
         delivered = true;
+        var col = GetComponent<Collider>();
+        if (col) { col.enabled = true; col.isTrigger = true; }
+        gameObject.layer = LayerMask.NameToLayer("Gem");
         gameObject.SetActive(true);
     }
 }
