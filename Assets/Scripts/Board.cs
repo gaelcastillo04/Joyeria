@@ -6,8 +6,8 @@ public class Board : MonoBehaviour
     public int sizeZ = 5;
     public float cellSize = 1f;
 
-    public float yHeight = 0f;     // altura para agentes y gemas
-    public float tileYHeight = -0.2f; // altura del piso
+    public float yHeight = 0f;
+    public float tileYHeight = -0.2f; 
 
     public bool generateTiles = true;
     public GameObject tilePrefab;
